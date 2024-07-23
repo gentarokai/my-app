@@ -1,26 +1,42 @@
+<script>
+	let newItem = '';
+	let todoList = [
+		{ text: 'first post', status: true },
+		{ text: 'upload the dog', status: false },
+		{ text: 'publish the post', status: false }
+	];
+
+	function addTodo() {
+		todoList = [...todoList, { text: newItem, status: false }];
+		newItem = '';
+	}
+
+	function removeFromList(index) {
+		todoList.splice(index, 1);
+		todoList = todoList;
+	}
+</script>
+
 <svelte:head>
 	<title>About</title>
 	<meta name="description" content="About this app" />
 </svelte:head>
 
-<div class="text-column">
-	<h1>About this app</h1>
+<h1>About this app</h1>
 
-	<p>
-		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You can make your own by typing the
-		following into your command line and following the prompts:
-	</p>
+<input bind:value={newItem} type="text" placeholder="new todo item.." />
+<button on:click={addTodo}>Add</button>
 
-	<pre>npm create svelte@latest</pre>
+<br />
+{#each todoList as item, index}
+	<input bind:checked={item.status} type="checkbox" />
+	<span class:checked={item.status}>{item.text}</span>
+	<span on:click={() => removeFromList(index)}>❌</span>
+	<br />
+{/each}
 
-	<p>
-		The page you're looking at is purely static HTML, with no client-side interactivity needed.
-		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
-		the devtools network panel and reloading.
-	</p>
-
-	<p>
-		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
-		using it with JavaScript disabled!
-	</p>
-</div>
+<style>
+	.checked {
+		text-decoration: line-through;
+	}
+</style>
